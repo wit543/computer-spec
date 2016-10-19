@@ -902,15 +902,14 @@ office(A,B,C,D,E,F):-
 print(0, _) :- !.
 print(_, []).
 print(N, [H|T]) :- write(H), nl, N1 is N - 1, print(N1, T).
-
 % UI
 
 start:-
 	nl,
-	write("**********************************************************************************"),
-    write("|                                                                                |"),
-	write("|                    Welcome to Computer-Specification Assistant                 |"),
-    write("|                                                                                |"),
+	write("**********************************************************************************"),nl,
+    write("|                                                                                |"),nl,
+	write("|                    Welcome to Computer-Specification Assistant                 |"),nl,
+    write("|                                                                                |"),nl,
     write("=================================================================================="),nl,
 	write("Choose the command by typing a number"),nl,nl,
 	write("1: Start a program"),nl,
@@ -943,15 +942,15 @@ command_select(1):-
 	select(X).
 
 command_select(2):-
-    write("=================================================================================="),
-	write("|                                   References                                   |"),
-    write("|                                                                                |"),
-	write("| - https://notebookspec.com/                                                    |"),
-	write("| - http://www.cpubenchmark.net/                                                 |"),
-	write("| - http://www.videocardbenchmark.net/                                           |"),
-	write("| - https://www.msi.com/index.php                                                |"),
-    write("|                                                                                |"),
-	write("=================================================================================="),
+    write("=================================================================================="),nl,
+	write("|                                   References                                   |"),nl,
+    write("|                                                                                |"),nl,
+	write("| - https://notebookspec.com/                                                    |"),nl,
+	write("| - http://www.cpubenchmark.net/                                                 |"),nl,
+	write("| - http://www.videocardbenchmark.net/                                           |"),nl,
+	write("| - https://www.msi.com/index.php                                                |"),nl,
+    write("|                                                                                |"),nl,
+	write("=================================================================================="),nl,
 	write("1: Back"),nl,
 	write("==============="),nl,
 	read(X),
@@ -959,15 +958,15 @@ command_select(2):-
 
 
 command_select(3):-
-    write("=================================================================================="),
-	write("|                                   About us                                     |"),
-    write("|                                                                                |"),
-    write("|  Software & Knowledge Engineering, Kasetsart University                        |"),
-	write("| Norawit  Urailertprasert     5710546275                                        |"),
-	write("| Narut    Poovorakit          5710546283                                        |"),
-	write("| Napong   Dungduangsasitorn   5710546216                                        |"),
-	write("| Kitipoom Kongpetch           5710546160                                        |"),
-    write("=================================================================================="),
+    write("=================================================================================="),nl,
+	write("|                                   About us                                     |"),nl,
+    write("|                                                                                |"),nl,
+    write("|  Software & Knowledge Engineering, Kasetsart University                        |"),nl,
+	write("| Norawit  Urailertprasert     5710546275                                        |"),nl,
+	write("| Narut    Poovorakit          5710546283                                        |"),nl,
+	write("| Napong   Dungduangsasitorn   5710546216                                        |"),nl,
+	write("| Kitipoom Kongpetch           5710546160                                        |"),nl,
+    write("=================================================================================="),nl,
 	write("1: Back"),nl,
 	write("==============="),nl,
 	read(X),
@@ -1001,12 +1000,250 @@ game_select:-
 	game_level(Level).
 
 	game_level(1):-
-		write("Low-level specification pc categorize by Gaming").
+		write("Low-level specification pc categorize by Gaming"),nl,
+        write("1: Show all possibilities"),nl,
+        write("2: Show list of CPU"),nl,
+        write("3: Show list of RAM"),nl,
+        write("4: Show list of STORAGE"),nl,
+        write("5: Show list of CASE"),nl,
+        write("6: Show list of GRAPHIC_CARD"),nl,
+        write("7: Show list of MAINBOARD"),nl,
+        write("8: Back"),nl,
+        read(X),
+        game_low(X).
+        
 	game_level(2):-
-		write("Medium-level specification pc categorize by Gaming").
+		write("Medium-level specification pc categorize by Gaming"),nl,
+        write("1: Show all possibilities"),nl,
+        write("2: Show list of CPU"),nl,
+        write("3: Show list of RAM"),nl,
+        write("4: Show list of STORAGE"),nl,
+        write("5: Show list of CASE"),nl,
+        write("6: Show list of GRAPHIC_CARD"),nl,
+        write("7: Show list of MAINBOARD"),nl,
+        write("8: Back"),nl,
+        read(X),
+        game_med(X).
 	game_level(3):-
-		write("High-level specification pc categorize by Gaming").
+		write("High-level specification pc categorize by Gaming"),nl,
+        write("1: Show all possibilities"),nl,
+        write("2: Show list of CPU"),nl,
+        write("3: Show list of RAM"),nl,
+        write("4: Show list of STORAGE"),nl,
+        write("5: Show list of CASE"),nl,
+        write("6: Show list of GRAPHIC_CARD"),nl,
+        write("7: Show list of MAINBOARD"),nl,
+        write("8: Back"),nl,
+        read(X),
+        game_high(X).
 	game_level(4):- command_select(1).
+
+game_low(1):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show all posibilities"),
+    setof([A,B,C,D,E,F],gaming_low(A,B,C,D,E,F),OUT),nl,
+    game_low_fullprint(10,OUT),nl,write("..."),nl,
+    write("1: back"),nl,
+    read(X),
+    back_game_low(X).
+    
+game_low(2):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of CPU"),nl,
+    setof(A,gaming_low(A,_,_,_,_,_),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_game_low(X).
+    
+game_low(3):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of RAM"),nl,
+    setof(B,gaming_low(_,B,_,_,_,_),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_game_low(X).
+    
+game_low(4):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of STORAGE"),nl,
+    setof(C,gaming_low(_,_,C,_,_,_),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_game_low(X).
+    
+game_low(5):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of CASE"),nl,
+    setof(D,gaming_low(_,_,_,D,_,_),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_game_low(X).
+    
+game_low(6):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of GRAPHIC_CARD"),nl,
+    setof(E,gaming_low(_,_,_,_,E,_),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_game_low(X).
+    
+game_low(7):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of MAINBOARD"),nl,
+    setof(F,gaming_low(_,_,_,_,_,F),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_game_low(X).
+    
+game_low(8):-game_select.
+    
+game_med(1):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show all posibilities"),
+    setof([A,B,C,D,E,F],gaming_medium(A,B,C,D,E,F),OUT),nl,
+    game_low_fullprint(10,OUT),nl,write("..."),nl,
+    write("1: back"),nl,
+    read(X),
+    back_game_mid(X).
+    
+game_med(2):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of CPU"),nl,
+    setof(A,gaming_medium(A,_,_,_,_,_),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_game_mid(X).
+    
+game_med(3):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of RAM"),nl,
+    setof(B,gaming_medium(_,B,_,_,_,_),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_game_mid(X).
+    
+game_med(4):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of STORAGE"),nl,
+    setof(C,gaming_medium(_,_,C,_,_,_),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_game_mid(X).
+    
+game_med(5):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of CASE"),nl,
+    setof(D,gaming_medium(_,_,_,D,_,_),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_game_mid(X).
+    
+game_med(6):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of GRAPHIC_CARD"),nl,
+    setof(E,gaming_medium(_,_,_,_,E,_),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_game_mid(X).
+    
+game_med(7):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of MAINBOARD"),nl,
+    setof(F,gaming_medium(_,_,_,_,_,F),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_game_mid(X).
+    
+game_med(8):-game_select.
+
+game_high(1):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show all posibilities"),
+    setof([A,B,C,D,E,F],gaming_high(A,B,C,D,E,F),OUT),nl,
+    game_low_fullprint(10,OUT),nl,write("..."),nl,
+    write("1: back"),nl,
+    read(X),
+    back_game_high(X).
+    
+game_high(2):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of CPU"),nl,
+    setof(A,gaming_high(A,_,_,_,_,_),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_gamehigh_high(X).
+    
+game_high(3):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of RAM"),nl,
+    setof(B,gaming_high(_,B,_,_,_,_),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_game_high(X).
+    
+game_high(4):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of STORAGE"),nl,
+    setof(C,gaming_high(_,_,C,_,_,_),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_game_high(X).
+    
+game_high(5):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of CASE"),nl,
+    setof(D,gaming_high(_,_,_,D,_,_),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_game_high(X).
+    
+game_high(6):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of GRAPHIC_CARD"),nl,
+    setof(E,gaming_high(_,_,_,_,E,_),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_game_high(X).
+    
+game_high(7):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of MAINBOARD"),nl,
+    setof(F,gaming_high(_,_,_,_,_,F),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_game_high(X).
+    
+game_high(8):-game_select.
+    
+back_game_low(1):- game_level(1).
+back_game_mid(1):- game_level(2).
+back_game_high(1):- game_level(3).
+
+game_low_fullprint(0,_):- !.
+game_low_fullprint(_,[]).
+game_low_fullprint(N, [H|T]):- format(" CPU:       ~w~n RAM:       ~w~n GRAPHIC:   ~w~n STORAGE:   ~w~n MAINBOARD: ~w~n CASE:      ~w~n--------",H),nl,N1 is N-1,game_low_fullprint(N1,T).
+game_low_print([]).
+game_low_print([H|T]):- write(H),nl,game_low_print(T).
+
+
 
 graphic_select:-
 	nl,
@@ -1019,20 +1256,324 @@ graphic_select:-
 	graphic_level(Level).
 
 	graphic_level(1):-
-		write("Low-level specification pc categorize by Graphic design").
+		write("Low-level specification pc categorize by Graphic design"),nl,
+        write("1: Show all possibilities"),nl,
+        write("2: Show list of CPU"),nl,
+        write("3: Show list of RAM"),nl,
+        write("4: Show list of STORAGE"),nl,
+        write("5: Show list of CASE"),nl,
+        write("6: Show list of GRAPHIC_CARD"),nl,
+        write("7: Show list of MAINBOARD"),nl,
+        write("8: Back"),nl,
+        read(X),
+        graphic_low(X).
+        
 	graphic_level(2):-
-		write("High-level specification pc categorize by Graphic design").
+		write("High-level specification pc categorize by Graphic design"),nl,
+        write("1: Show all possibilities"),nl,
+        write("2: Show list of CPU"),nl,
+        write("3: Show list of RAM"),nl,
+        write("4: Show list of STORAGE"),nl,
+        write("5: Show list of CASE"),nl,
+        write("6: Show list of GRAPHIC_CARD"),nl,
+        write("7: Show list of MAINBOARD"),nl,
+        write("8: Back"),nl,
+        read(X),
+        graphic_high(X).
+        
 	graphic_level(3):- command_select(1).
+    
+graphic_low(1):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show all posibilities"),
+    setof([A,B,C,D,E,F],graphic_low(A,B,C,D,E,F),OUT),nl,
+    game_low_fullprint(10,OUT),nl,write("..."),nl,
+    write("1: back"),nl,
+    read(X),
+    back_graphic_low(X).
+    
+graphic_low(2):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of CPU"),nl,
+    setof(A,graphic_low(A,_,_,_,_,_),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_graphic_low(X).
+    
+graphic_low(3):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of RAM"),nl,
+    setof(B,graphic_low(_,B,_,_,_,_),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_graphic_low(X).
+    
+graphic_low(4):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of STORAGE"),nl,
+    setof(C,graphic_low(_,_,C,_,_,_),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_graphic_low(X).
+    
+graphic_low(5):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of CASE"),nl,
+    setof(D,graphic_low(_,_,_,D,_,_),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_graphic_low(X).
+    
+graphic_low(6):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of GRAPHIC_CARD"),nl,
+    setof(E,graphic_low(_,_,_,_,E,_),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_graphic_low(X).
+    
+graphic_low(7):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of MAINBOARD"),nl,
+    setof(F,graphic_low(_,_,_,_,_,F),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_graphic_low(X).
+    
+graphic_low(8):-graphic_select.
+
+graphic_high(1):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show all posibilities"),
+    setof([A,B,C,D,E,F],graphic_high(A,B,C,D,E,F),OUT),nl,
+    game_low_fullprint(10,OUT),nl,write("..."),nl,
+    write("1: back"),nl,
+    read(X),
+    back_graphic_high(X).
+    
+graphic_high(2):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of CPU"),nl,
+    setof(A,graphic_high(A,_,_,_,_,_),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_graphic_high(X).
+    
+graphic_high(3):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of RAM"),nl,
+    setof(B,graphic_high(_,B,_,_,_,_),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_graphic_high(X).
+    
+graphic_high(4):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of STORAGE"),nl,
+    setof(C,graphic_high(_,_,C,_,_,_),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_graphic_high(X).
+    
+graphic_high(5):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of CASE"),nl,
+    setof(D,graphic_high(_,_,_,D,_,_),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_graphic_high(X).
+    
+graphic_high(6):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of GRAPHIC_CARD"),nl,
+    setof(E,graphic_high(_,_,_,_,E,_),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_graphic_high(X).
+    
+graphic_high(7):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of MAINBOARD"),nl,
+    setof(F,graphic_high(_,_,_,_,_,F),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_graphic_high(X).
+    
+graphic_high(8):-graphic_select.
+
+back_graphic_low(1):- graphic_level(1).
+back_graphic_high(1):- graphic_level(2).
+    
  
 photo_select:-
-	write("1: back").
+    write("1: Show all possibilities"),nl,
+    write("2: Show list of CPU"),nl,
+    write("3: Show list of RAM"),nl,
+    write("4: Show list of STORAGE"),nl,
+    write("5: Show list of CASE"),nl,
+    write("6: Show list of GRAPHIC_CARD"),nl,
+    write("7: Show list of MAINBOARD"),nl,
+    write("8: Back"),nl,
+    read(X),
+    photography(X).
 
-	photo_select(1):- command_select(1).
+    
+photography(1):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show all posibilities"),
+    setof([A,B,C,D,E,F],photography(A,B,C,D,E,F),OUT),nl,
+    game_low_fullprint(10,OUT),nl,write("..."),nl,
+    write("1: back"),nl,
+    read(X),
+    back_photography(X).
+    
+photography(2):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of CPU"),nl,
+    setof(A,photography(A,_,_,_,_,_),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_photography(X).
+    
+photography(3):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of RAM"),nl,
+    setof(B,photography(_,B,_,_,_,_),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_photography(X).
+    
+photography(4):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of STORAGE"),nl,
+    setof(C,photography(_,_,C,_,_,_),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_photography(X).
+    
+photography(5):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of CASE"),nl,
+    setof(D,photography(_,_,_,D,_,_),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_photography(X).
+    
+photography(6):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of GRAPHIC_CARD"),nl,
+    setof(E,photography(_,_,_,_,E,_),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_photography(X).
+    
+photography(7):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of MAINBOARD"),nl,
+    setof(F,photography(_,_,_,_,_,F),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_photography(X).
+    
+photography(8):- command_select(1).
+back_photography(1):- command_select(1).
+    
 
 office_select:-
-	write("1: back").
+	write("1: Show all possibilities"),nl,
+    write("2: Show list of CPU"),nl,
+    write("3: Show list of RAM"),nl,
+    write("4: Show list of STORAGE"),nl,
+    write("5: Show list of CASE"),nl,
+    write("6: Show list of GRAPHIC_CARD"),nl,
+    write("7: Show list of MAINBOARD"),nl,
+    write("8: Back"),nl,
+    read(X),
+    office(X).
 
-	office_select(1):- command_select(1).
+office(1):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show all posibilities"),
+    setof([A,B,C,D,E,F],office(A,B,C,D,E,F),OUT),nl,
+    game_low_fullprint(10,OUT),nl,write("..."),nl,
+    write("1: back"),nl,
+    read(X),
+    back_office(X).
+    
+office(2):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of CPU"),nl,
+    setof(A,office(A,_,_,_,_,_),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_office(X).
+    
+office(3):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of RAM"),nl,
+    setof(B,office(_,B,_,_,_,_),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_office(X).
+    
+office(4):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of STORAGE"),nl,
+    setof(C,office(_,_,C,_,_,_),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_office(X).
+    
+office(5):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of CASE"),nl,
+    setof(D,office(_,_,_,D,_,_),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_office(X).
+    
+office(6):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of GRAPHIC_CARD"),nl,
+    setof(E,office(_,_,_,_,E,_),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_office(X).
+    
+office(7):-
+    write("----------------------------------------------------------------------------------"),
+    write("Show list of MAINBOARD"),nl,
+    setof(F,office(_,_,_,_,_,F),OUT),
+    game_low_print(OUT),
+    write("1: back"),nl,
+    read(X),
+    back_office(X).
+    
+office(8):- command_select(1).
+back_office(1):- command_select(1).
 
 custom_select:-
 	write("1: back").
