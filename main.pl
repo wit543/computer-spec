@@ -940,4 +940,3 @@ custom_select:-
 	write("1: back").
 
 	custom_select(1):- command_select(1).
-
