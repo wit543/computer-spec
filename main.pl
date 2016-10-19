@@ -789,9 +789,9 @@ cpu_with_less_than_num_core(X,Y):- isA(X,cpu),cpu_cores(X,Z),string_less_than_nu
 cpu_with_less_than_equal_num_core(X,Y):- isA(X,cpu),cpu_cores(X,Z),string_less_than_equal_number(Z,Y).
 %compare ram
 ram_capacity_more_than(X,Y):- isA(X,ram),ram_capa(X,Z),string_less_than_number(Z,Y).
-ram_capacity_more_than_equal(X,Y):- isA(X,ram),ram_capa(X,Z),string_less_than_equal_number(Z,Y).
+ram_capacity_more_than_equal(X,Y):- isA(X,ram),ram_capa(X,Z),string_more_than_equal_number(Z,Y).
 ram_capacity_less_than(X,Y):- isA(X,ram),ram_capa(X,Z),string_more_than_number(Z,Y).
-ram_capacity_less_than_equal(X,Y):- isA(X,ram),ram_capa(X,Z),string_more_than_equal_number(Z,Y).
+ram_capacity_less_than_equal(X,Y):- isA(X,ram),ram_capa(X,Z),string_less_than_equal_number(Z,Y).
 %compare storage
 str_capacity_more_than(X,Y):- isA(X,storage),str_capa(X,Z),string_more_than_number(Z,Y).
 str_capacity_more_than_equal(X,Y):- isA(X,storage),str_capa(X,Z),string_more_than_equal_number(Z,Y).
@@ -851,7 +851,7 @@ gaming_medium(A,B,C,D,E,F):-
 	cpu_with_more_than_equal_num_core(A,2),
 	cpu_with_less_than_num_core(A,4),
 	ram_capacity_more_than_equal(B,4),
-	ram_capacity_less_than(B,8),
+	ram_capacity_less_than_equal(B,8),
 	gc_mem_capacity_more_than_equal(C,2),
 	gc_mem_capacity_less_than(C,4),
 	str_capacity_more_than_equal(D,1000),
