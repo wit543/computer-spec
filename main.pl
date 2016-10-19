@@ -253,16 +253,16 @@ ram_timing("ram ddr3(1600) 4gb. blackberry 8 chip", "11-11-11-28-2n").
 ram_timing("ram ddr3(1600) 2gb. kingston ", "11-11-11-28-2n").
 ram_timing("ram ddr3(1600) 2gb. blackberry 8 chip", "11-11-11-28-2n").
 ram_timing("kingston hyper-x ddr3 2gb 1600", "11-11-11-28-2n").
-ram_capa("kingston hyper-x fury ddr4 8gb 2400 black", "8gb").
-ram_capa("apacer ddr3 4gb 1600 armor gold", "4gb").
-ram_capa("ram hyper-x ddr3(1600) 4gb. kingston ", "4 gb.").
-ram_capa("g.skill aegis ddr3 4gb 1600", "4gb").
-ram_capa("g.skill aegis ddr4 4gb 2133", "4gb").
-ram_capa("kingston hyper-x fury ddr4 4gb 2133 black", "4gb").
-ram_capa("ram ddr3(1600) 4gb. blackberry 8 chip", "4 gb.").
-ram_capa("ram ddr3(1600) 2gb. kingston ", "2 gb").
-ram_capa("ram ddr3(1600) 2gb. blackberry 8 chip", "2 gb").
-ram_capa("kingston hyper-x ddr3 2gb 1600", "2gb").
+ram_capa("kingston hyper-x fury ddr4 8gb 2400 black", "8").
+ram_capa("apacer ddr3 4gb 1600 armor gold", "4").
+ram_capa("ram hyper-x ddr3(1600) 4gb. kingston ", "4").
+ram_capa("g.skill aegis ddr3 4gb 1600", "4").
+ram_capa("g.skill aegis ddr4 4gb 2133", "4").
+ram_capa("kingston hyper-x fury ddr4 4gb 2133 black", "4").
+ram_capa("ram ddr3(1600) 4gb. blackberry 8 chip", "4").
+ram_capa("ram ddr3(1600) 2gb. kingston ", "2").
+ram_capa("ram ddr3(1600) 2gb. blackberry 8 chip", "2").
+ram_capa("kingston hyper-x ddr3 2gb 1600", "2").
 ram_warrant("kingston hyper-x fury ddr4 8gb 2400 black", "l/t").
 ram_warrant("apacer ddr3 4gb 1600 armor gold", "l/t").
 ram_warrant("ram hyper-x ddr3(1600) 4gb. kingston ", "l/t").
@@ -308,18 +308,18 @@ str_interface("500 gb. sata-iii seagate synnex", "sata3").
 str_interface("500 gb. sata-iii toshiba", "sata3").
 str_interface("sandisk extreme pro", "sata3").
 str_interface("ocz rd400 nvme", "m.2").
-str_capa("western digital red 5tb wd50efrx", "5tb").
-str_capa("western digital green 4tb wd40ezrx", "4tb").
-str_capa("western digital blue wd40ezex 4tb", "4tb").
-str_capa("samsung 950 pro m.2 512gb", "512gb").
-str_capa("intel ssd 600p 1tb", "1tb").
-str_capa("samsung 850 evo", "1tb").
-str_capa("toshiba 2tb", "2tb").
-str_capa("500 gb. sata-iii seagate strek", "500gb").
-str_capa("500 gb. sata-iii seagate synnex", "500gb").
-str_capa("500 gb. sata-iii toshiba", "500gb").
-str_capa("sandisk extreme pro", "480gb").
-str_capa("ocz rd400 nvme", "512gb").
+str_capa("western digital red 5tb wd50efrx", "5000").
+str_capa("western digital green 4tb wd40ezrx", "4000").
+str_capa("western digital blue wd40ezex 4tb", "4000").
+str_capa("samsung 950 pro m.2 512gb", "512").
+str_capa("intel ssd 600p 1tb", "1000").
+str_capa("samsung 850 evo", "1000").
+str_capa("toshiba 2tb", "2000").
+str_capa("500 gb. sata-iii seagate strek", "500").
+str_capa("500 gb. sata-iii seagate synnex", "500").
+str_capa("500 gb. sata-iii toshiba", "500").
+str_capa("sandisk extreme pro", "480").
+str_capa("ocz rd400 nvme", "512").
 str_read("western digital red 5tb wd50efrx", "170 mb/s").
 str_read("western digital green 4tb wd40ezrx", "144 mb/s").
 str_read("western digital blue wd40ezex 4tb", "120 mb/s").
@@ -784,16 +784,25 @@ string_more_than_string(X,Y):-atom_number(X,I),atom_number(Y,J),I>J.
 cpu_price_less_than(X,Y):- isA(X,cpu),cpu_price(X,Z),string_less_than_number(Z,Y).
 cpu_price_more_than(X,Y):- isA(X,cpu),cpu_price(X,Z),string_more_than_number(Z,Y).
 cpu_with_more_than_num_core(X,Y):- isA(X,cpu),cpu_cores(X,Z),string_more_than_number(Z,Y).
+cpu_with_more_equal_than_num_core(X,Y):- isA(X,cpu),cpu_cores(X,Z),string_more_than_equal_number(Z,Y).
+cpu_with_less_than_num_core(X,Y):- isA(X,cpu),cpu_cores(X,Z),string_less_than_number(Z,Y).
+cpu_with_less_than_equal_num_core(X,Y):- isA(X,cpu),cpu_cores(X,Z),string_less_than_equal_number(Z,Y).
 %compare ram
 ram_capacity_more_than(X,Y):- isA(X,ram),ram_capa(X,Z),string_less_than_number(Z,Y).
+ram_capacity_more_than_equal(X,Y):- isA(X,ram),ram_capa(X,Z),string_less_than_equal_number(Z,Y).
 ram_capacity_less_than(X,Y):- isA(X,ram),ram_capa(X,Z),string_more_than_number(Z,Y).
+ram_capacity_less_than_equal(X,Y):- isA(X,ram),ram_capa(X,Z),string_more_than_equal_number(Z,Y).
 %compare storage
 str_capacity_more_than(X,Y):- isA(X,storage),str_capa(X,Z),string_more_than_number(Z,Y).
+str_capacity_more_than_equal(X,Y):- isA(X,storage),str_capa(X,Z),string_more_than_equal_number(Z,Y).
 str_capacity_less_than(X,Y):- isA(X,storage),str_capa(X,Z),string_less_than_number(Z,Y).
+str_capacity_less_than_equal(X,Y):- isA(X,storage),str_capa(X,Z),string_less_than_equal_number(Z,Y).
 str_is_ssd(X):- isA(X,storage),str_spin(X,Y),string_more_than_number(Y,300).
 %comapare graphic card
 gc_mem_capacity_more_than(X,Y):- isA(X,graphic_card), gc_apacity(X,Z),string_more_than_number(Z,Y).
-gc_mem_capacity_lesss_than(X,Y):- isA(X,graphic_card),gc_apacity(X,Z),string_more_than_number(Z,Y).
+gc_mem_capacity_more_than_equal(X,Y):- isA(X,graphic_card), gc_apacity(X,Z),string_more_than_equal_number(Z,Y).
+gc_mem_capacity_lesss_than(X,Y):- isA(X,graphic_card),gc_apacity(X,Z),string_less_than_number(Z,Y).
+gc_mem_capacity_lesss_than_equal(X,Y):- isA(X,graphic_card),gc_apacity(X,Z),string_less_than_equal_number(Z,Y).
 %compatible
 cpu_compatible_with_ram(X,Y):- isA(X,cpu),cpu_memtype(X,Z),isA(Y,ram),ram_type(Y,Z).
 ram_compatible_with_cpu(X,Y):- isA(X,ram),ram_type(X,Z),isA(Y,cpu),cpu_memtype(Y,Z).
@@ -828,6 +837,14 @@ compatible(X,Y,Z):- compatible(X,Y),gc_compatible_with_cpu(Z,X),gc_compatible_wi
 compatible(A,B,C,D):- compatible(A,B,C),str_compatible_with_cpu(D,A),str_compatible_with_ram(D,B),str_compatible_with_gc(D,C).
 compatible(A,B,C,D,E):- compatible(A,B,C,D),mb_compatible_with_cpu(E,A),mb_compatible_with_ram(E,B),mb_compatible_with_graphic_card(E,C),mb_compatible_with_storage(E,D).
 compatible(A,B,C,D,E,F):- compatible(A,B,C,D,E),mb_compatible_with_case(E,F).
+
+gamming_low(A,B,C,D,E,F):-
+	compatible(A,B,C,D,E,F),
+	cpu_with_less_than_equal_num_core(A,2),
+	ram_capacity_less_than_equal(B,4).
+%	gc_mem_capacity_lesss_than_equal(C,2),
+%	str_capacity_less_than_equal(D,500),
+%	\+ str_is_ssd(D).
 
 print(0, _) :- !.
 print(_, []).
@@ -970,3 +987,4 @@ custom_select:-
 	custom_select(1):- command_select(1).
 
 %compatible(A,B),write("cpu: "),write(A),nl,write("ram: "),write(B),nl,write("===================="),nl,fail.
+%,write(A),write(" "),write(B),write(" "),write(C),write(" "),write(D),write(" "),write(E),write(" "),write(F),nl.
