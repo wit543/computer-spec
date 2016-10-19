@@ -838,15 +838,15 @@ compatible(A,B,C,D):- compatible(A,B,C),str_compatible_with_cpu(D,A),str_compati
 compatible(A,B,C,D,E):- compatible(A,B,C,D),mb_compatible_with_cpu(E,A),mb_compatible_with_ram(E,B),mb_compatible_with_graphic_card(E,C),mb_compatible_with_storage(E,D).
 compatible(A,B,C,D,E,F):- compatible(A,B,C,D,E),mb_compatible_with_case(E,F).
 
-gamming_low(A,B,C,D,E,F):-
+gaming_low(A,B,C,D,E,F):-
 	compatible(A,B,C,D,E,F),
 	cpu_with_less_than_equal_num_core(A,2),
 	ram_capacity_less_than_equal(B,4),
-	gc_mem_capacity_lesss_than_equal(C,2),
+	gc_mem_capacity_less_than_equal(C,2),
 	str_capacity_less_than_equal(D,500),
 	\+ str_is_ssd(D).
 
-gamming_medium(A,B,C,D,E,F):-
+gaming_medium(A,B,C,D,E,F):-
 	compatible(A,B,C,D,E,F),
 	cpu_with_more_than_equal_num_core(A,2),
 	cpu_with_less_than_num_core(A,4),
@@ -857,7 +857,7 @@ gamming_medium(A,B,C,D,E,F):-
 	str_capacity_more_than_equal(D,1000),
 	\+ str_is_ssd(D).
 
-gamming_high(A,B,C,D,E,F):-
+gaming_high(A,B,C,D,E,F):-
 	compatible(A,B,C,D,E,F),
 	cpu_with_more_than_equal_num_core(A,4),
 	ram_capacity_more_than_equal(B,8),
@@ -883,6 +883,21 @@ graphic_high(A,B,C,D,E,F):-
 	gc_mem_capacity_more_than_equal(C,4),
 	(str_capacity_more_than_equal(D,1000);
 	str_is_ssd(D)).
+
+photography(A,B,C,D,E,F):-
+	compatible(A,B,C,D,E,F),
+	cpu_with_less_than_equal_num_core(A,2),
+	ram_capacity_less_than_equal(B,4),
+	gc_mem_capacity_less_than_equal(C,2),
+	(str_capacity_more_than_equal(D,1000);
+	str_is_ssd(D)).
+
+office(A,B,C,D,E,F):-
+	compatible(A,B,C,D,E,F),
+	cpu_with_less_than_equal_num_core(A,2),
+	ram_capacity_less_than_equal(B,4 ),
+	gc_mem_capacity_less_than_equal(C,2),
+	str_capacity_less_than_equal(D,500).
 
 print(0, _) :- !.
 print(_, []).
