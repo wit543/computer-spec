@@ -797,7 +797,11 @@ gc_mem_capacity_lesss_than(X,Y):- isA(X,graphic_card),gc_apacity(X,Z),string_mor
 %compatible
 cpu_compatible_with_ram(X,Y):- isA(X,cpu),cpu_memtype(X,Z),isA(Y,ram),ram_type(Y,Z).
 ram_compatible_with_cpu(X,Y):- isA(X,ram),ram_type(X,Z),isA(Y,cpu),cpu_memtype(Y,Z).
-
+gc_compatible_with_ram(X,Y):- isA(X,graphic_card),isA(Y,ram).
+gc_compatible_with_cpu(X,Y):- isA(X,graphic_card),isA(Y,cpu).
+str_compatible_with_cpu(X,Y):- isA(X,storage),isA(Y,cpu).
+str_compatible_with_ram(X,Y):- isA(X,storage),isA(Y,ram).
+str_compatible_with_gc(X,Y):- isA(X,storage),isA(Y,graphic_card).
 ram_compatible_with_cpus([X|Rest],Y):- isA(X,ram),ram_type(X,Z),isA(Y,cpu),cpu_memtype(Y,Z),ram_compatible_with_cpus(Rest,Y).
 cpu_compatible_with_rams(X,[Y|Rest]):- isA(X,cpu),cpu_memtype(X,Z),isA(Y,ram),ram_type(Y,Z),cpu_compatible_with_rams(X,Rest).
 
@@ -805,7 +809,7 @@ mb_compatible_with_cpu(X,Y):- isA(X,mainboard),isA(Y,cpu),mb_socket(X,A),cpu_soc
 mb_compatible_with_ram(X,Y):- isA(X,mainboard),isA(Y,ram),mb_memtype(X,A),ram_type(Y,A).
 mb_compatible_with_graphic_card(X,Y):- isA(X,mainboard),isA(Y,graphic_card),mb_pci_ex16(X,A),atom_number(A,B),B>=1.
 mb_compatible_with_case(X,Y):- isA(X,mainboard),isA(Y,case),mb_form_factor(X,A),case_compat_with_mainboard(Y,A).
-mb_compatible_with_storage(X,Y):- isA(X,mainboard),isA(Y,storage),((mb_sata(X,A),A>=0,str_interface(Y,"sata3"));(mb_m_2(X,B),B>=0,str_interface(Y,"m.2"))).
+mb_compatible_with_storage(X,Y):- isA(X,mainboard),isA(Y,storage),((mb_sata(X,A),string_more_than_number(A,0),str_interface(Y,"sata3"));(mb_m_2(X,B),string_more_than_number(B,0),str_interface(Y,"m.2"))).
 % compatible with select hardware
 gc_compatible([]).
 gc_compatible([X|Rest]):- isA(X,graphic_card),gc_compatible(Rest).
@@ -813,24 +817,31 @@ gc_compatible([X|Rest]):- isA(X,graphic_card),gc_compatible(Rest).
 str_compatible([]).
 str_compatible([X|Rest]):- isA(X,storage),str_compatible(Rest).
 %compare powerfulness
-cpu_x_is_powerful_than_cpu_y(X,Y):- isA(X,cpu),isA(Y,cpu),cpu_score(Y,A),cpu_score(Y,B),string_more_than_string(A,B).
+cpu_x_is_powerful_than_ccpu_y(X,Y):- isA(X,cpu),isA(Y,cpu),cpu_score(Y,A),cpu_score(Y,B),string_more_than_string(A,B).
 cpu_x_is_lsee_powerful_than_cpu_y(X,Y):- isA(X,cpu),isA(Y,cpu),cpu_score(Y,A),cpu_score(Y,B),string_less_than_string(A,B).
 
 gc_X_is_powerful_than_cpu_y(X,Y):- isA(X,graphic_card),isA(Y,graphic_card),gc_score(X,A),gc_score(Y,B),string_more_than_string(A,B).
 gc_X_is_less_powerful_than_cpu_y(X,Y):- isA(X,graphic_card),isA(Y,graphic_card),gc_score(X,A),gc_score(Y,B),string_less_than_string(A,B).
 
-compatible(X,Y):- ram_compatible_with_cpu(X,Y),cpu_compatible_with_ram(Y,X).
-compatible(X,Y,Z):- compatible(X,Y),gc_compatible(Z).
-compatible(A,B,C,D):- compatible(A,B,C),str_compatible(D).
-compatible(A,B,C,D,E):- compatible(A,B,C,D),mb_compatible_with_cpu(E,A),mb_compatible_with_ram(E,B).mb_compatible_with_graphic_card(E,C).mb_compatible_with_storage(E,D).
+compatible(X,Y):- ram_compatible_with_cpu(Y,X),cpu_compatible_with_ram(X,Y).
+compatible(X,Y,Z):- compatible(X,Y),gc_compatible_with_cpu(Z,X),gc_compatible_with_ram(Z,Y).
+compatible(A,B,C,D):- compatible(A,B,C),str_compatible_with_cpu(D,A),str_compatible_with_ram(D,B),str_compatible_with_gc(D,C).
+compatible(A,B,C,D,E):- compatible(A,B,C,D),mb_compatible_with_cpu(E,A),mb_compatible_with_ram(E,B),mb_compatible_with_graphic_card(E,C),mb_compatible_with_storage(E,D).
 compatible(A,B,C,D,E,F):- compatible(A,B,C,D,E),mb_compatible_with_case(E,F).
+
+print(0, _) :- !.
+print(_, []).
+print(N, [H|T]) :- write(H), nl, N1 is N - 1, print(N1, T).
 
 % UI
 
 start:-
 	nl,
-	write("*********************************************************************"),nl,
-	write("             Welcome to Computer-Specification Assistant"),nl,nl,
+	write("**********************************************************************************"),
+    write("|                                                                                |"),
+	write("|                    Welcome to Computer-Specification Assistant                 |"),
+    write("|                                                                                |"),
+    write("=================================================================================="),nl,
 	write("Choose the command by typing a number"),nl,nl,
 	write("1: Start a program"),nl,
 	write("2: References"),nl,
@@ -853,12 +864,47 @@ command_select(1):-
 	nl,
 	write("     Select category by choosing number"),nl,nl,
 	write("1: Gaming"),nl,
+    write("2: Graphic"),nl,
 	write("3: Photography"),nl,
 	write("4: Office"),nl,
 	write("5: Custom"),nl,
 	write("==============="),nl,
 	read(X),
 	select(X).
+
+command_select(2):-
+    write("=================================================================================="),
+	write("|                                   References                                   |"),
+    write("|                                                                                |"),
+	write("| - https://notebookspec.com/                                                    |"),
+	write("| - http://www.cpubenchmark.net/                                                 |"),
+	write("| - http://www.videocardbenchmark.net/                                           |"),
+	write("| - https://www.msi.com/index.php                                                |"),
+    write("|                                                                                |"),
+	write("=================================================================================="),
+	write("1: Back"),nl,
+	write("==============="),nl,
+	read(X),
+	ref_select(X).
+
+
+command_select(3):-
+    write("=================================================================================="),
+	write("|                                   About us                                     |"),
+    write("|                                                                                |"),
+    write("|  Software & Knowledge Engineering, Kasetsart University                        |"),
+	write("| Norawit  Urailertprasert     5710546275                                        |"),
+	write("| Narut    Poovorakit          5710546283                                        |"),
+	write("| Napong   Dungduangsasitorn   5710546216                                        |"),
+	write("| Kitipoom Kongpetch           5710546160                                        |"),
+    write("=================================================================================="),
+	write("1: Back"),nl,
+	write("==============="),nl,
+	read(X),
+	about_select(X).
+
+ref_select(1):- alr_start.
+about_select(1):- alr_start.
 
 	select(1):-
 		game_select.
@@ -871,36 +917,7 @@ command_select(1):-
 	select(5):-
 		custom_select.
 	select(X):-
-		write("please select again."),read(Y),select(Y).
-
-
-command_select(2):-
-	write("     References: "),nl,nl,
-	write("https://notebookspec.com/"),nl,
-	write("http://www.cpubenchmark.net/"),nl,
-	write("http://www.videocardbenchmark.net/"),nl,
-	write("https://www.msi.com/index.php"),nl,
-	write("==============="),nl,
-	write("1: Back"),nl,
-	write("==============="),nl,
-	read(X),
-	ref_select(X).
-
-	ref_select(1):- alr_start.
-
-command_select(3):-
-	write("     Software & Knowledge Engineering, Kasetsart University."),nl,nl,
-	write("Norawit  Urailertprasert     5710546275"),nl,
-	write("Narut    Poovorakit          5710546283"),nl,
-	write("Napong   Dungduangsasitorn   5710546216"),nl,
-	write("Kitipoom Kongpetch           5710546160"),nl,
-	write("==============="),nl,
-	write("1: Back"),nl,
-	write("==============="),nl,
-	read(X),
-	about_select(X).
-
-	about_select(1):- alr_start.
+		write("please select again."),read(X),select(X).
 
 game_select:-
 	nl,
@@ -922,10 +939,21 @@ game_select:-
 	game_level(4):- command_select(1).
 
 graphic_select:-
-	write("1: back").
+	nl,
+	write("Select number of level."),nl,
+	write("1: low"),nl,
+	write("2: high"),nl,
+	write("3: back"),nl,
+	write("==============="),nl,
+	read(Level),
+	graphic_level(Level).
 
-	graphic_select(1):- command_select(1).
-
+	graphic_level(1):-
+		write("Low-level specification pc categorize by Graphic design").
+	graphic_level(2):-
+		write("High-level specification pc categorize by Graphic design").
+	graphic_level(3):- command_select(1).
+ 
 photo_select:-
 	write("1: back").
 
@@ -940,3 +968,5 @@ custom_select:-
 	write("1: back").
 
 	custom_select(1):- command_select(1).
+
+%compatible(A,B),write("cpu: "),write(A),nl,write("ram: "),write(B),nl,write("===================="),nl,fail.
