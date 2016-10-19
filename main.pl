@@ -483,18 +483,18 @@ gc_score("gt210 asus", "181").
 gc_score("amd r5 230 sapphire", "340").
 gc_score("gigabyte gtx1080", "12357").
 gc_score("msi gtx1060 gaming x", "9141").
-gc_capacity("amd rx 480 sapphire nitro oc", "8gb").
-gc_capacity(" amd rx 480 msi gamingx", "4gb").
-gc_capacity("gtx960 msi armor oc", "2gb").
-gc_capacity("amd rx 460 gigabyte oc", "4gb").
-gc_capacity("amd r9 380 asus strix dc2oc oc", "2gb").
-gc_capacity("amd r7 240 his", "2gb").
-gc_capacity("gt710 longwell", "2gb").
-gc_capacity("amd r5 230 gigabyte", "1gb").
-gc_capacity("gt210 asus", "1gb").
-gc_capacity("amd r5 230 sapphire", "1gb").
-gc_capacity("gigabyte gtx1080", "8gb").
-gc_capacity("msi gtx1060 gaming x", "6gb").
+gc_capacity("amd rx 480 sapphire nitro oc", "8").
+gc_capacity(" amd rx 480 msi gamingx", "4").
+gc_capacity("gtx960 msi armor oc", "2").
+gc_capacity("amd rx 460 gigabyte oc", "4").
+gc_capacity("amd r9 380 asus strix dc2oc oc", "2").
+gc_capacity("amd r7 240 his", "2").
+gc_capacity("gt710 longwell", "2").
+gc_capacity("amd r5 230 gigabyte", "1").
+gc_capacity("gt210 asus", "1").
+gc_capacity("amd r5 230 sapphire", "1").
+gc_capacity("gigabyte gtx1080", "8").
+gc_capacity("msi gtx1060 gaming x", "6").
 gc_core("amd rx 480 sapphire nitro oc", "2304").
 gc_core(" amd rx 480 msi gamingx", "2304").
 gc_core("gtx960 msi armor oc", "1024").
@@ -784,7 +784,7 @@ string_more_than_string(X,Y):-atom_number(X,I),atom_number(Y,J),I>J.
 cpu_price_less_than(X,Y):- isA(X,cpu),cpu_price(X,Z),string_less_than_number(Z,Y).
 cpu_price_more_than(X,Y):- isA(X,cpu),cpu_price(X,Z),string_more_than_number(Z,Y).
 cpu_with_more_than_num_core(X,Y):- isA(X,cpu),cpu_cores(X,Z),string_more_than_number(Z,Y).
-cpu_with_more_equal_than_num_core(X,Y):- isA(X,cpu),cpu_cores(X,Z),string_more_than_equal_number(Z,Y).
+cpu_with_more_than_equal_num_core(X,Y):- isA(X,cpu),cpu_cores(X,Z),string_more_than_equal_number(Z,Y).
 cpu_with_less_than_num_core(X,Y):- isA(X,cpu),cpu_cores(X,Z),string_less_than_number(Z,Y).
 cpu_with_less_than_equal_num_core(X,Y):- isA(X,cpu),cpu_cores(X,Z),string_less_than_equal_number(Z,Y).
 %compare ram
@@ -799,10 +799,10 @@ str_capacity_less_than(X,Y):- isA(X,storage),str_capa(X,Z),string_less_than_numb
 str_capacity_less_than_equal(X,Y):- isA(X,storage),str_capa(X,Z),string_less_than_equal_number(Z,Y).
 str_is_ssd(X):- isA(X,storage),str_spin(X,Y),string_more_than_number(Y,300).
 %comapare graphic card
-gc_mem_capacity_more_than(X,Y):- isA(X,graphic_card), gc_apacity(X,Z),string_more_than_number(Z,Y).
-gc_mem_capacity_more_than_equal(X,Y):- isA(X,graphic_card), gc_apacity(X,Z),string_more_than_equal_number(Z,Y).
-gc_mem_capacity_lesss_than(X,Y):- isA(X,graphic_card),gc_apacity(X,Z),string_less_than_number(Z,Y).
-gc_mem_capacity_lesss_than_equal(X,Y):- isA(X,graphic_card),gc_apacity(X,Z),string_less_than_equal_number(Z,Y).
+gc_mem_capacity_more_than(X,Y):- isA(X,graphic_card), gc_capacity(X,Z),string_more_than_number(Z,Y).
+gc_mem_capacity_more_than_equal(X,Y):- isA(X,graphic_card), gc_capacity(X,Z),string_more_than_equal_number(Z,Y).
+gc_mem_capacity_less_than(X,Y):- isA(X,graphic_card),gc_capacity(X,Z),string_less_than_number(Z,Y).
+gc_mem_capacity_less_than_equal(X,Y):- isA(X,graphic_card),gc_capacity(X,Z),string_less_than_equal_number(Z,Y).
 %compatible
 cpu_compatible_with_ram(X,Y):- isA(X,cpu),cpu_memtype(X,Z),isA(Y,ram),ram_type(Y,Z).
 ram_compatible_with_cpu(X,Y):- isA(X,ram),ram_type(X,Z),isA(Y,cpu),cpu_memtype(Y,Z).
@@ -841,10 +841,48 @@ compatible(A,B,C,D,E,F):- compatible(A,B,C,D,E),mb_compatible_with_case(E,F).
 gamming_low(A,B,C,D,E,F):-
 	compatible(A,B,C,D,E,F),
 	cpu_with_less_than_equal_num_core(A,2),
-	ram_capacity_less_than_equal(B,4).
-%	gc_mem_capacity_lesss_than_equal(C,2),
-%	str_capacity_less_than_equal(D,500),
-%	\+ str_is_ssd(D).
+	ram_capacity_less_than_equal(B,4),
+	gc_mem_capacity_lesss_than_equal(C,2),
+	str_capacity_less_than_equal(D,500),
+	\+ str_is_ssd(D).
+
+gamming_medium(A,B,C,D,E,F):-
+	compatible(A,B,C,D,E,F),
+	cpu_with_more_than_equal_num_core(A,2),
+	cpu_with_less_than_num_core(A,4),
+	ram_capacity_more_than_equal(B,4),
+	ram_capacity_less_than(B,8),
+	gc_mem_capacity_more_than_equal(C,2),
+	gc_mem_capacity_less_than(C,4),
+	str_capacity_more_than_equal(D,1000),
+	\+ str_is_ssd(D).
+
+gamming_high(A,B,C,D,E,F):-
+	compatible(A,B,C,D,E,F),
+	cpu_with_more_than_equal_num_core(A,4),
+	ram_capacity_more_than_equal(B,8),
+	gc_mem_capacity_more_than_equal(C,4),
+	(str_capacity_more_than_equal(D,1000);
+	str_is_ssd(D)).
+
+graphic_low(A,B,C,D,E,F):-
+	compatible(A,B,C,D,E,F),
+	cpu_with_more_than_equal_num_core(A,4),
+	cpu_with_less_than_num_core(A,8),
+	ram_capacity_more_than_equal(B,4),
+	ram_capacity_less_than(B,8),
+	gc_mem_capacity_more_than_equal(C,4),
+	((str_capacity_more_than_equal(D,500),
+	str_capacity_less_than(D,500));
+	str_is_ssd(D)).
+
+graphic_high(A,B,C,D,E,F):-
+	compatible(A,B,C,D,E,F),
+	cpu_with_more_than_equal_num_core(A,8),
+	ram_capacity_more_than_equal(B,8 ),
+	gc_mem_capacity_more_than_equal(C,4),
+	(str_capacity_more_than_equal(D,1000);
+	str_is_ssd(D)).
 
 print(0, _) :- !.
 print(_, []).
