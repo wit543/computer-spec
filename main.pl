@@ -870,7 +870,7 @@ graphic_low(A,B,C,D,E,F):-
 	cpu_with_more_than_equal_num_core(A,4),
 	cpu_with_less_than_num_core(A,8),
 	ram_capacity_more_than_equal(B,4),
-	ram_capacity_less_than(B,8),
+	ram_capacity_less_than_equal(B,8),
 	gc_mem_capacity_more_than_equal(C,4),
 	((str_capacity_more_than_equal(D,500),
 	str_capacity_less_than(D,500));
