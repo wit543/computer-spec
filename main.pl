@@ -822,8 +822,8 @@ gc_X_is_less_powerful_than_cpu_y(X,Y):- isA(X,graphic_card),isA(Y,graphic_card),
 compatible(X,Y):- ram_compatible_with_cpu(X,Y),cpu_compatible_with_ram(Y,X).
 compatible(X,Y,Z):- compatible(X,Y),gc_compatible(Z).
 compatible(A,B,C,D):- compatible(A,B,C),str_compatible(D).
-compatible(A,B,C,D,E):- compatible(A,B,C,D),
-
+compatible(A,B,C,D,E):- compatible(A,B,C,D),mb_compatible_with_cpu(E,A),mb_compatible_with_ram(E,B).mb_compatible_with_graphic_card(E,C).mb_compatible_with_storage(E,D).
+compatible(A,B,C,D,E,F):- compatible(A,B,C,D,E),mb_compatible_with_case(E,F).
 
 % UI
 
