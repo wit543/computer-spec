@@ -1576,35 +1576,42 @@ back_office(1):- command_select(1).
 custom_select:-
     write("1: Select CPU"),nl,
     write("2: Select RAM"),nl,
-    write("3: Select STORAGE"),nl,
-    write("4: Select CASE"),nl,
-    write("5: Select GRAPHIC_CARD"),nl,
-    write("6: Select MAINBOARD"),nl,
+    write("3: Select GRAPHIC CARD"),nl,
+    write("4: Select STORAGE"),nl,
+    write("5: Select MAINBOARD"),nl,
+    write("6: Select CASE"),nl,
 	write("7: back"),nl,
 	read(X),
 	custom_select(X).
 
+
 custom_selectd(A,B,C,D,E,F):-
-	((isA(A,cpu)->print(A),nl);
-	(isA(B,ram)->print(B),nl);
-	(isA(C,storage)->print(C),nl);
-	(isA(D,case)->print(D),nl),
-	(isA(E,graphic_card)->print(E),nl);
-	(isA(F,mainboard)->print(F),nl)),
+%	((var(A)->(write("ram: "),write(B),nl));
+%	(var(B)->(write("cpu: "),write(A),nl));
+%	(var(C)->(write("storage: "),write(C),nl));
+%	(var(D)->(write("case: "),write(D),nl));
+%	(var(E)->(write("graphic card: "),write(E),nl));
+%	(var(F)->(write("mainboard: "),write(F),nl))),
+	write("cpu: "),write(A),nl,
+	write("ram: "),write(B),nl,
+	write("storge: "),write(C),nl,
+	write("case: "),write(D),nl,
+	write("graphic card: "),write(E),nl,
+	write("mainboard: "),write(F),nl,
     write("1: Select CPU"),nl,
     write("2: Select RAM"),nl,
-    write("3: Select STORAGE"),nl,
-    write("4: Select CASE"),nl,
-    write("5: Select GRAPHIC_CARD"),nl,
-    write("6: Select MAINBOARD"),nl,
+    write("3: Select GRAPHIC CARD"),nl,
+    write("4: Select STORAGE"),nl,
+    write("5: Select MAINBOARD"),nl,
+    write("6: Select CASE"),nl,
 	write("7: back"),nl,
 	read(X),
-	((X==1->custom_selectd(A,A,B,C,D,E,F));
-	(X==2->custom_selectd(B,A,B,C,D,E,F));
-	(X==3->custom_selectd(C,A,B,C,D,E,F));
-	(X==4->custom_selectd(D,A,B,C,D,E,F)),
-	(X==5->custom_selectd(E,A,B,C,D,E,F));
-	(X==6->custom_selectd(F,A,B,C,D,E,F))).
+	((X==1->custom_selectd(cpu,A,B,C,D,E,F));
+	(X==2->custom_selectd(ram,A,B,C,D,E,F));
+	(X==3->custom_selectd(storage,A,B,C,D,E,F));
+	(X==4->custom_selectd(case,A,B,C,D,E,F)),
+	(X==5->custom_selectd(graphic_card,A,B,C,D,E,F));
+	(X==6->custom_selectd(mainboard,A,B,C,D,E,F))).
 
 %find_all_element(A,E):-
 %	C=[],
@@ -1619,12 +1626,12 @@ custom_selectd(A,B,C,D,E,F):-
 
 custom_selectd(In,I,J,K,L,M,N):-
 	H=[],
-	((isA(In,cpu)->findall(A,compatible(A,J,K,L,M,N),B));
-	(isA(In,ram)->findall(A,compatible(I,A,K,L,M,N),B));
-	(isA(In,storage)->findall(A,compatible(I,J,A,L,M,N),B));
-	(isA(In,case)->findall(A,compatible(I,J,K,A,M,N),B)),
-	(isA(In,graphic_card)->findall(A,compatible(I,J,K,L,A,N),B));
-	(isA(In,mainboard)->findall(A,compatible(I,J,K,L,M,A),B))),
+	((In==cpu->findall(A,compatible(A,J,K,L,M,N),B));
+	(In==ram->findall(A,compatible(I,A,K,L,M,N),B));
+	(In==storage->findall(A,compatible(I,J,A,L,M,N),B));
+	(In==case->findall(A,compatible(I,J,K,A,M,N),B)),
+	(In==graphic_card->findall(A,compatible(I,J,K,L,A,N),B));
+	(In==mainboard->findall(A,compatible(I,J,K,L,M,A),B))),
 	append(H,B,F),
 	list_to_set(F,G),
 	length(G,C),
@@ -1632,12 +1639,13 @@ custom_selectd(In,I,J,K,L,M,N):-
 	read(X),
 	E is C-X,
 	nth0(E,G,D),
-	((isA(In,cpu)->custom_selectd(D,J,K,L,M,N));
-	(isA(In,ram)->custom_selectd(I,D,K,L,M,N));
-	(isA(In,storage)->custom_selectd(I,J,D,L,M,N));
-	(isA(In,case)->custom_selectd(I,J,K,D,M,N)),
-	(isA(In,graphic_card)->custom_selectd(I,J,K,L,D,N));
-	(isA(In,mainboard)->custom_selectd(I,J,K,L,M,D))).
+	((In==cpu->custom_selectd(D,J,K,L,M,N));
+	(In==ram->custom_selectd(I,D,K,L,M,N));
+	(In==storage->custom_selectd(I,J,D,L,M,N));
+	(In==case->custom_selectd(I,J,K,D,M,N));
+	(In==graphic_card->custom_selectd(I,J,K,L,D,N));
+	(In==mainboard->custom_selectd(I,J,K,L,M,D)),
+	(In==dummy->custom_selectd(I,J,K,L,M,N))).
 
 print(0, _) :- !.
 print(_, []).
@@ -1650,12 +1658,13 @@ custom_select_helper(Y):-
 	read(X),
 	E is C-X,
 	nth0(E,B,D),
-	((isA(D,cpu)->custom_selectd(D,_,_,_,_,_));
-	(isA(D,ram)->custom_selectd(_,D,_,_,_,_));
-	(isA(D,storage)->custom_selectd(_,_,D,_,_,_));
-	(isA(D,case)->custom_selectd(_,_,_,D,_,_)),
-	(isA(D,graphic_card)->custom_selectd(_,_,_,_,D,_));
-	(isA(D,mainboard)->custom_selectd(_,_,_,_,_,D))).
+	(((Y==cpu->custom_selectd(D,_,_,_,_,_)));
+	(Y==ram->custom_selectd(_,D,_,_,_,_));
+	(Y==storage->custom_selectd(_,_,D,_,_,_));
+	(Y==case->custom_selectd(_,_,_,D,_,_));
+	(Y==graphic_card->custom_selectd(_,_,_,_,D,_));
+	(Y==mainboard->custom_selectd(_,_,_,_,_,D)),
+	(Y==dummy->custom_selectd(_,_,_,_,_,_))).
 
 custom_select(1):-
 	custom_select_helper(cpu).
