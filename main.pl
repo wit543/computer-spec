@@ -899,9 +899,7 @@ office(A,B,C,D,E,F):-
 	gc_mem_capacity_less_than_equal(C,2),
 	str_capacity_less_than_equal(D,500).
 
-print(0, _) :- !.
-print(_, []).
-print(N, [H|T]) :- write(H), nl, N1 is N - 1, print(N1, T).
+
 % UI
 
 start:-
@@ -969,7 +967,7 @@ command_select(3):-
     write("=================================================================================="),nl,
 	write("1: Back"),nl,
 	write("==============="),nl,
-	read(X),
+	read(X),		
 	about_select(X).
 
 ref_select(1):- alr_start.
@@ -1576,9 +1574,103 @@ office(8):- command_select(1).
 back_office(1):- command_select(1).
 
 custom_select:-
-	write("1: back").
+    write("1: Select CPU"),nl,
+    write("2: Select RAM"),nl,
+    write("3: Select STORAGE"),nl,
+    write("4: Select CASE"),nl,
+    write("5: Select GRAPHIC_CARD"),nl,
+    write("6: Select MAINBOARD"),nl,
+	write("7: back"),nl,
+	read(X),
+	custom_select(X).
 
-	custom_select(1):- command_select(1).
+custom_selectd(A,B,C,D,E,F):-
+	((isA(A,cpu)->print(A),nl);
+	(isA(B,ram)->print(B),nl);
+	(isA(C,storage)->print(C),nl);
+	(isA(D,case)->print(D),nl),
+	(isA(E,graphic_card)->print(E),nl);
+	(isA(F,mainboard)->print(F),nl)),
+    write("1: Select CPU"),nl,
+    write("2: Select RAM"),nl,
+    write("3: Select STORAGE"),nl,
+    write("4: Select CASE"),nl,
+    write("5: Select GRAPHIC_CARD"),nl,
+    write("6: Select MAINBOARD"),nl,
+	write("7: back"),nl,
+	read(X),
+	((X==1->custom_selectd(A,A,B,C,D,E,F));
+	(X==2->custom_selectd(B,A,B,C,D,E,F));
+	(X==3->custom_selectd(C,A,B,C,D,E,F));
+	(X==4->custom_selectd(D,A,B,C,D,E,F)),
+	(X==5->custom_selectd(E,A,B,C,D,E,F));
+	(X==6->custom_selectd(F,A,B,C,D,E,F))).
+
+%find_all_element(A,E):-
+%	C=[],
+%	((isA(In,cpu)->findall(A,compatible(A,J,K,L,M,N),B));
+%	(isA(In,ram)->findall(A,compatible(I,A,K,L,M,N),B));
+%	(isA(In,storage)->findall(A,compatible(I,J,A,L,M,N),B));
+%	(isA(In,case)->findall(A,compatible(I,J,K,A,M,N),B)),
+%	(isA(In,graphic_card)->findall(A,compatible(I,J,K,L,A,N),B));
+%	(isA(In,mainboard)->findall(A,compatible(I,J,K,L,M,A),B))),
+%	append(C,B,F),
+%	list_to_set(F,E).
+
+custom_selectd(In,I,J,K,L,M,N):-
+	H=[],
+	((isA(In,cpu)->findall(A,compatible(A,J,K,L,M,N),B));
+	(isA(In,ram)->findall(A,compatible(I,A,K,L,M,N),B));
+	(isA(In,storage)->findall(A,compatible(I,J,A,L,M,N),B));
+	(isA(In,case)->findall(A,compatible(I,J,K,A,M,N),B)),
+	(isA(In,graphic_card)->findall(A,compatible(I,J,K,L,A,N),B));
+	(isA(In,mainboard)->findall(A,compatible(I,J,K,L,M,A),B))),
+	append(H,B,F),
+	list_to_set(F,G),
+	length(G,C),
+	print(C,G),
+	read(X),
+	E is C-X,
+	nth0(E,G,D),
+	((isA(In,cpu)->custom_selectd(D,J,K,L,M,N));
+	(isA(In,ram)->custom_selectd(I,D,K,L,M,N));
+	(isA(In,storage)->custom_selectd(I,J,D,L,M,N));
+	(isA(In,case)->custom_selectd(I,J,K,D,M,N)),
+	(isA(In,graphic_card)->custom_selectd(I,J,K,L,D,N));
+	(isA(In,mainboard)->custom_selectd(I,J,K,L,M,D))).
+
+print(0, _) :- !.
+print(_, []).
+print(N, [H|T]) :- N1 is N - 1, print(N1, T),write(N),write(": "),write(H), nl.
+
+custom_select_helper(Y):-
+	setof(A,isA(A,Y),B),
+	length(B,C),
+	print(C,B),
+	read(X),
+	E is C-X,
+	nth0(E,B,D),
+	((isA(D,cpu)->custom_selectd(D,_,_,_,_,_));
+	(isA(D,ram)->custom_selectd(_,D,_,_,_,_));
+	(isA(D,storage)->custom_selectd(_,_,D,_,_,_));
+	(isA(D,case)->custom_selectd(_,_,_,D,_,_)),
+	(isA(D,graphic_card)->custom_selectd(_,_,_,_,D,_));
+	(isA(D,mainboard)->custom_selectd(_,_,_,_,_,D))).
+
+custom_select(1):-
+	custom_select_helper(cpu).
+custom_select(2):-
+	custom_select_helper(ram).
+custom_select(3):-
+	custom_select_helper(storage).
+custom_select(4):-
+	custom_select_helper(case).
+custom_select(5):-
+	custom_select_helper(graphic_card).
+custom_select(6):-
+	custom_select_helper(mainboard).
+custom_select(7):- command_select(1).
+
 
 %compatible(A,B),write("cpu: "),write(A),nl,write("ram: "),write(B),nl,write("===================="),nl,fail.
 %,write(A),write(" "),write(B),write(" "),write(C),write(" "),write(D),write(" "),write(E),write(" "),write(F),nl.
