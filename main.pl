@@ -1592,26 +1592,29 @@ custom_selectd(A,B,C,D,E,F):-
 %	(var(D)->(write("case: "),write(D),nl));
 %	(var(E)->(write("graphic card: "),write(E),nl));
 %	(var(F)->(write("mainboard: "),write(F),nl))),
-	write("cpu: "),write(A),nl,
-	write("ram: "),write(B),nl,
-	write("storge: "),write(C),nl,
-	write("case: "),write(D),nl,
-	write("graphic card: "),write(E),nl,
-	write("mainboard: "),write(F),nl,
+	write("CPU: "),write(A),nl,
+	write("RAM: "),write(B),nl,
+	write("GRAPHIC CARD: "),write(C),nl,
+	write("STORAGE: "),write(D),nl,
+	write("MAINBOARD: "),write(E),nl,
+	write("CASE: "),write(F),nl,
     write("1: Select CPU"),nl,
     write("2: Select RAM"),nl,
     write("3: Select GRAPHIC CARD"),nl,
     write("4: Select STORAGE"),nl,
     write("5: Select MAINBOARD"),nl,
     write("6: Select CASE"),nl,
-	write("7: back"),nl,
+    write("7: clear"),nl,
+	write("8: back"),nl,
 	read(X),
 	((X==1->custom_selectd(cpu,A,B,C,D,E,F));
 	(X==2->custom_selectd(ram,A,B,C,D,E,F));
-	(X==3->custom_selectd(storage,A,B,C,D,E,F));
-	(X==4->custom_selectd(case,A,B,C,D,E,F)),
-	(X==5->custom_selectd(graphic_card,A,B,C,D,E,F));
-	(X==6->custom_selectd(mainboard,A,B,C,D,E,F))).
+	(X==3->custom_selectd(graphic_card,A,B,C,D,E,F));
+	(X==4->custom_selectd(stroge,A,B,C,D,E,F));
+	(X==5->custom_selectd(mainboard,A,B,C,D,E,F));
+	(X==6->custom_selectd(case,A,B,C,D,E,F));
+	(X==7->custom_selectd(_,_,_,_,_,_));
+	(X==8->command_select(1))).
 
 %find_all_element(A,E):-
 %	C=[],
@@ -1628,10 +1631,10 @@ custom_selectd(In,I,J,K,L,M,N):-
 	H=[],
 	((In==cpu->findall(A,compatible(A,J,K,L,M,N),B));
 	(In==ram->findall(A,compatible(I,A,K,L,M,N),B));
-	(In==storage->findall(A,compatible(I,J,A,L,M,N),B));
-	(In==case->findall(A,compatible(I,J,K,A,M,N),B)),
-	(In==graphic_card->findall(A,compatible(I,J,K,L,A,N),B));
-	(In==mainboard->findall(A,compatible(I,J,K,L,M,A),B))),
+	(In==graphic_card->findall(A,compatible(I,J,A,L,M,N),B));
+	(In==stroge->findall(A,compatible(I,J,K,A,M,N),B));
+	(In==mainboard->findall(A,compatible(I,J,K,L,A,N),B));
+	(In==case->findall(A,compatible(I,J,K,L,M,A),B))),
 	append(H,B,F),
 	list_to_set(F,G),
 	length(G,C),
@@ -1641,11 +1644,10 @@ custom_selectd(In,I,J,K,L,M,N):-
 	nth0(E,G,D),
 	((In==cpu->custom_selectd(D,J,K,L,M,N));
 	(In==ram->custom_selectd(I,D,K,L,M,N));
-	(In==storage->custom_selectd(I,J,D,L,M,N));
-	(In==case->custom_selectd(I,J,K,D,M,N));
-	(In==graphic_card->custom_selectd(I,J,K,L,D,N));
-	(In==mainboard->custom_selectd(I,J,K,L,M,D)),
-	(In==dummy->custom_selectd(I,J,K,L,M,N))).
+	(In==graphic_card->custom_selectd(I,J,D,L,M,N));
+	(In==stroge->custom_selectd(I,J,K,D,M,N));
+	(In==mainboard->custom_selectd(I,J,K,L,D,N));
+	(In==case->custom_selectd(I,J,K,L,M,D))).
 
 print(0, _) :- !.
 print(_, []).
@@ -1671,13 +1673,13 @@ custom_select(1):-
 custom_select(2):-
 	custom_select_helper(ram).
 custom_select(3):-
-	custom_select_helper(storage).
-custom_select(4):-
-	custom_select_helper(case).
-custom_select(5):-
 	custom_select_helper(graphic_card).
-custom_select(6):-
+custom_select(4):-
+	custom_select_helper(storage).
+custom_select(5):-
 	custom_select_helper(mainboard).
+custom_select(6):-
+	custom_select_helper(case).
 custom_select(7):- command_select(1).
 
 
